@@ -1,4 +1,6 @@
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -64,12 +66,11 @@ public class TestsMTS {
         driver.get("https://www.mts.by/");
         driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
         driver.findElement(By.id("cookie-agree")).click();
-        //WebElement link = driver.findElement(By.xpath("/html/body/div[6]/main/div/div[4]/div[1]/div/div/div[2]/section/div/a"));
         WebElement link = driver.findElement(By.linkText("Подробнее о сервисе"));
         assertTrue(link.isEnabled());
         assertTrue(link.getAttribute("href") != null);
         link.click();
-        driver.navigate().back();
+        //driver.navigate().back();
 
     }
 
