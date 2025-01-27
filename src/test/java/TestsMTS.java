@@ -1,5 +1,4 @@
-import org.junit.BeforeClass;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -11,23 +10,24 @@ import java.util.concurrent.TimeUnit;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TestsMTS {
-    private static WebDriver driver = null;
+    private static WebDriver driver;
 
-    @BeforeClass
-    public static void make() {
+    @BeforeEach
+    public void make() {
         driver = new ChromeDriver();
-        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-        driver.get("https://www.mts.by/");
-        driver.findElement(By.id("cookie-agree")).click();
+    }
+
+    @AfterEach
+    public void close() {
+        driver.close();
     }
 
     @Test
     public void checkTitle() {
+        driver.get("https://www.mts.by/");
+        driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
+        driver.findElement(By.id("cookie-agree")).click();
         String title;
-
-        // что делать с этим ? На сколько я понял он же должен запустится сам перед тестами,
-        //если будет не сложно поясните
-        make();
         title = driver.findElement(By.xpath("/html/body/div[6]/main/div/div[4]/div[1]/div/div/div[2]/section/div/h2")).getText();
         assertTrue(title.equals("Онлайн пополнение\n" + "без комиссии"));
 
@@ -35,12 +35,16 @@ public class TestsMTS {
 
     @Test
     public void checkLogo() throws NoSuchElementException {
+        driver.get("https://www.mts.by/");
+        driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
+        driver.findElement(By.id("cookie-agree")).click();
         /*WebElement visa = driver.findElement(By.);
         WebElement vvisa = driver.findElement(By.xpath("/html/body/div[6]/main/div/div[4]/div[1]/div/div/div[2]/section/div/div[2]/ul/li[2]/img"));
         WebElement mc = driver.findElement(By.xpath("/html/body/div[6]/main/div/div[4]/div[1]/div/div/div[2]/section/div/div[2]/ul/li[3]/img"));
         WebElement mcsc = driver.findElement(By.xpath("/html/body/div[6]/main/div/div[4]/div[1]/div/div/div[2]/section/div/div[2]/ul/li[4]/img"));
         WebElement bc = driver.findElement(By.xpath("/html/body/div[6]/main/div/div[4]/div[1]/div/div/div[2]/section/div/div[2]/ul/li[5]/img"));*/
-
+        //driver.get("https://www.mts.by/");
+        //driver.findElement(By.id("cookie-agree")).click();
         WebElement visa = driver.findElement(By.cssSelector("img[alt = 'Visa']"));
         WebElement vvisa = driver.findElement(By.cssSelector("img[alt = 'Verified By Visa']"));
         WebElement mc = driver.findElement(By.cssSelector("img[alt = 'MasterCard']"));
@@ -52,10 +56,14 @@ public class TestsMTS {
         assertTrue(mc.isDisplayed());
         assertTrue(mcsc.isDisplayed());
         assertTrue(bc.isDisplayed());
+
     }
 
     @Test
     public void checkLink() {
+        driver.get("https://www.mts.by/");
+        driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
+        driver.findElement(By.id("cookie-agree")).click();
         //WebElement link = driver.findElement(By.xpath("/html/body/div[6]/main/div/div[4]/div[1]/div/div/div[2]/section/div/a"));
         WebElement link = driver.findElement(By.linkText("Подробнее о сервисе"));
         assertTrue(link.isEnabled());
@@ -67,6 +75,9 @@ public class TestsMTS {
 
     @Test
     public void checkButton() {
+        driver.get("https://www.mts.by/");
+        driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
+        driver.findElement(By.id("cookie-agree")).click();
         WebElement selector = driver.findElement(By.xpath("//*[@id=\"pay-section\"]/div/div/div[2]/section/div/div[1]/div[1]/div[2]/button"));
         //WebElement selector = driver.findElement(By.className("select_header"));
         //WebElement number = driver.findElement(By.xpath("//*[@id=\"connection-phone\"]"));
@@ -92,6 +103,7 @@ public class TestsMTS {
 
         //assertTrue(continueBut.isEnabled());
         continueBut.click();
+
 
     }
 
