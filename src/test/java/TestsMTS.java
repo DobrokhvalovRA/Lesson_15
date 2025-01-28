@@ -8,6 +8,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 
 import java.util.NoSuchElementException;
 import java.util.concurrent.TimeUnit;
+import java.util.function.BooleanSupplier;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -17,18 +18,20 @@ public class TestsMTS {
     @BeforeEach
     public void make() {
         driver = new ChromeDriver();
+        driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
     }
 
     @AfterEach
     public void close() {
-        driver.close();
+        driver.quit();
     }
 
     @Test
     public void checkTitle() {
         driver.get("https://www.mts.by/");
-        driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
-        driver.findElement(By.id("cookie-agree")).click();
+        if (driver.findElement(By.xpath("/html/body/div[6]/main/div/div[2]")).isDisplayed()){
+            driver.findElement(By.id("cookie-agree")).click();
+        }
         String title;
         title = driver.findElement(By.xpath("/html/body/div[6]/main/div/div[4]/div[1]/div/div/div[2]/section/div/h2")).getText();
         assertTrue(title.equals("Онлайн пополнение\n" + "без комиссии"));
@@ -38,8 +41,9 @@ public class TestsMTS {
     @Test
     public void checkLogo() throws NoSuchElementException {
         driver.get("https://www.mts.by/");
-        driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
-        driver.findElement(By.id("cookie-agree")).click();
+        if (driver.findElement(By.xpath("/html/body/div[6]/main/div/div[2]")).isDisplayed()){
+            driver.findElement(By.id("cookie-agree")).click();
+        }
         /*WebElement visa = driver.findElement(By.);
         WebElement vvisa = driver.findElement(By.xpath("/html/body/div[6]/main/div/div[4]/div[1]/div/div/div[2]/section/div/div[2]/ul/li[2]/img"));
         WebElement mc = driver.findElement(By.xpath("/html/body/div[6]/main/div/div[4]/div[1]/div/div/div[2]/section/div/div[2]/ul/li[3]/img"));
@@ -64,8 +68,9 @@ public class TestsMTS {
     @Test
     public void checkLink() {
         driver.get("https://www.mts.by/");
-        driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
-        driver.findElement(By.id("cookie-agree")).click();
+        if (driver.findElement(By.xpath("/html/body/div[6]/main/div/div[2]")).isDisplayed()){
+            driver.findElement(By.id("cookie-agree")).click();
+        }
         WebElement link = driver.findElement(By.linkText("Подробнее о сервисе"));
         assertTrue(link.isEnabled());
         assertTrue(link.getAttribute("href") != null);
@@ -77,8 +82,9 @@ public class TestsMTS {
     @Test
     public void checkButton() {
         driver.get("https://www.mts.by/");
-        driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
-        driver.findElement(By.id("cookie-agree")).click();
+        if (driver.findElement(By.xpath("/html/body/div[6]/main/div/div[2]")).isDisplayed()){
+            driver.findElement(By.id("cookie-agree")).click();
+        }
         WebElement selector = driver.findElement(By.xpath("//*[@id=\"pay-section\"]/div/div/div[2]/section/div/div[1]/div[1]/div[2]/button"));
         //WebElement selector = driver.findElement(By.className("select_header"));
         //WebElement number = driver.findElement(By.xpath("//*[@id=\"connection-phone\"]"));
@@ -104,7 +110,6 @@ public class TestsMTS {
 
         //assertTrue(continueBut.isEnabled());
         continueBut.click();
-
 
     }
 
